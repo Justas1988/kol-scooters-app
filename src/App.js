@@ -1,13 +1,34 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ScootersList from "./components/ScootersList";
+import DateConverter from "./components/DateConverter";
 
 function App() {
   const [scooters, setScooters] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(Date.now());
-  const [regInput, setReg] = useState("");
-  const [dateInput, setDateInput] = useState("");
+  const [regInput, setReg] = useState(randomID());
+  const [dateInput, setDateInput] = useState(DateConverter(Date.now()));
   const [kmInput, setKm] = useState(0);
+
+  function randomID() {
+    let key = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (var i = 0; i < 6; i++) {
+      key += characters.charAt(Math.floor(Math.random() *
+        characters.length));
+    }
+    return key;
+
+  }
+
+  function totalRide() {
+    let total = 0;
+    if (scooters.length > 0) {
+      for (let i = 0; i < scooters.length; i++) {
+        total = total + scooters[i].total_ride_kilometers;
+      } return total;
+    } return 0
+  }
 
   function regInputHandler(e) {
     setReg(e.target.value)
@@ -27,8 +48,8 @@ function App() {
       ride: kmInput
     }
     addScooter(Scooter)
-    setReg("")
-    setDateInput("")
+    setReg(randomID())
+    setDateInput(DateConverter(Date.now()))
     setKm(0)
   }
 
@@ -95,6 +116,13 @@ function App() {
           </tr>
 
           <ScootersList scooters={scooters} deleteScooter={deleteScooter} edit={edit} />
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>Bendra rida: {totalRide()} km</th>
+            <th></th>
+          </tr>
         </tbody>
       </table>
     </>

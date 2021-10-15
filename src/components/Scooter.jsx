@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import DateConverter from "./DateConverter";
+
 
 export default function Scooter({ scooter, deleteScooter, edit }) {
     const [dateInput, setDate] = useState("");
@@ -15,21 +17,21 @@ export default function Scooter({ scooter, deleteScooter, edit }) {
 
     },[scooter.is_busy])
 
-    function dateConverter(a) {
-        let date = new Date(a);
-        let year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        let dt = date.getDate();
+    // function DateConverter(a) {
+    //     let date = new Date(a);
+    //     let year = date.getFullYear();
+    //     let month = date.getMonth() + 1;
+    //     let dt = date.getDate();
 
-        if (dt < 10) {
-            dt = '0' + dt;
-        }
-        if (month < 10) {
-            month = '0' + month;
-        }
+    //     if (dt < 10) {
+    //         dt = '0' + dt;
+    //     }
+    //     if (month < 10) {
+    //         month = '0' + month;
+    //     }
 
-        return year + '-' + month + '-' + dt;
-    }
+    //     return year + '-' + month + '-' + dt;
+    // }
 
     function setStyleHandler() {
         if (editRowStyle === "editRow") {
@@ -63,20 +65,22 @@ export default function Scooter({ scooter, deleteScooter, edit }) {
             <tr className="scootersList">
                 <td>{scooter.registration_code}</td>
                 <td className="taken">{busy}</td>
-                <td>{dateConverter(scooter.last_use_time)}</td>
+                <td>{DateConverter(scooter.last_use_time)}</td>
                 <td>{scooter.total_ride_kilometers}</td>
                 <td><button onClick={() => deleteScooter(scooter.registration_code)}>Delete!</button>
                     <button onClick={() => setStyleHandler()}>Edit!</button></td>
             </tr>
             <tr className={editRowStyle}>
                 <td></td>
-                <td><input type="checkbox" name="isFree" checked={isChecked} onChange={() => edit(scooter.registration_code, { date: dateConverter(scooter.last_use_time), busy: !scooter.is_busy, ride: scooter.total_ride_kilometers })}/><label>Ar paspirtukas laisvas?</label></td>
+                <td><input type="checkbox" name="isFree" checked={isChecked} onChange={() => edit(scooter.registration_code, { date: DateConverter(scooter.last_use_time), busy: !scooter.is_busy, ride: scooter.total_ride_kilometers })}/><label>Ar paspirtukas laisvas?</label></td>
                 <td><input type="date" value={dateInput} onChange={dateInputHandler} />
                     <button className="dateBtn" onClick={() => edit(scooter.registration_code, { date: dateInput, busy: scooter.is_busy, ride: scooter.total_ride_kilometers })}>Submit</button></td>
                 <td><input type="number" value={kmInput} onChange={kmInputHandler} />
-                    <button onClick={() => editKmTrigger(scooter.registration_code, { date: dateConverter(scooter.last_use_time), busy: scooter.is_busy, ride: kmInput + scooter.total_ride_kilometers })}>Submit</button></td>
+                    <button onClick={() => editKmTrigger(scooter.registration_code, { date: DateConverter(scooter.last_use_time), busy: scooter.is_busy, ride: kmInput + scooter.total_ride_kilometers })}>Submit</button></td>
                 <td></td>
             </tr>
         </>
     )
 }
+
+
