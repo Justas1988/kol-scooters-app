@@ -9,16 +9,51 @@ function App() {
   const [regInput, setReg] = useState(randomID());
   const [dateInput, setDateInput] = useState(DateConverter(Date.now()));
   const [kmInput, setKm] = useState(0);
+  const [kmSortState, setkmSortState] = useState(1);
 
   function randomID() {
     let key = '';
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < 8; i++) {
       key += characters.charAt(Math.floor(Math.random() *
         characters.length));
     }
     return key;
+  }
 
+  function sortingByKM(a) {
+    if (a === 1) {
+      const SortedScooters = [...scooters]
+      SortedScooters.sort(sorterDSC)
+      setScooters(SortedScooters)
+      setkmSortState(0)
+    } else {
+      const SortedScooters = [...scooters]
+      SortedScooters.sort(sorterASC)
+      setScooters(SortedScooters)
+      setkmSortState(1)
+
+    }
+  }
+
+  function sorterDSC(a, b) {
+    if ((a.total_ride_kilometers) > (b.total_ride_kilometers)) {
+      return -1;
+    }
+    if ((a.total_ride_kilometers) < (b.total_ride_kilometers)) {
+      return 1;
+    }
+    return 0;
+  }
+
+  function sorterASC(a, b) {
+    if ((a.total_ride_kilometers) > (b.total_ride_kilometers)) {
+      return 1;
+    }
+    if ((a.total_ride_kilometers) < (b.total_ride_kilometers)) {
+      return -1;
+    }
+    return 0;
   }
 
   function totalRide() {
@@ -94,7 +129,7 @@ function App() {
       <div className="inputForm">
         <div className="inputComponent">
           <label>Registracijos numeris</label>
-          <input type="text" name="reg" value={regInput} onChange={regInputHandler}></input>
+          <input type="text" name="reg" value={regInput} onChange={regInputHandler} disabled></input>
         </div>
         <div className="inputComponent">
           <label>Paskutinio naudojimo data</label>
@@ -114,7 +149,7 @@ function App() {
             <th>Registracijos kodas</th>
             <th>Būsena</th>
             <th>Paskutinio naudojimo data</th>
-            <th>Rida</th>
+            <th>Rida <button onClick={() => sortingByKM(kmSortState)}>Sort</button></th>
             <th>Funkcijos</th>
           </tr>
 
