@@ -41,6 +41,9 @@ function App() {
   }
 
   function addHandler() {
+    if (kmInput < 0 || kmInput > 9999.99) {
+      return window.alert("netinka paspirtuko RIDA, įveskite skaičių nuo 0 - 9999.99");
+    }
     const Scooter = {
       id: regInput,
       busy: 0,
@@ -99,7 +102,7 @@ function App() {
         </div>
         <div className="inputComponent">
           <label>Rida</label>
-          <input type="number" name="km" value={kmInput} onChange={kmInputHandler}></input>
+          <input type="number" name="km" value={kmInput} onChange={kmInputHandler} min="0" step="0.01" ></input>
         </div>
         <div className="inputComponent">
           <button onClick={() => addHandler()}>Submit</button>
