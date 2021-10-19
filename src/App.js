@@ -10,6 +10,7 @@ function App() {
   const [dateInput, setDateInput] = useState(DateConverter(Date.now()));
   const [kmInput, setKm] = useState(0);
   const [kmSortState, setkmSortState] = useState(1);
+  const [freeSortState, setfreeSortState] = useState(1);
 
   function randomID() {
     let key = '';
@@ -20,6 +21,8 @@ function App() {
     }
     return key;
   }
+
+  /////////////////////sorting functions ////////////////////////////////
 
   function sortingByKM(a) {
     if (a === 1) {
@@ -32,6 +35,21 @@ function App() {
       SortedScooters.sort(sorterASC)
       setScooters(SortedScooters)
       setkmSortState(1)
+
+    }
+  }
+
+  function sortingByfree(a) {
+    if (a === 1) {
+      const SortedScooters = [...scooters]
+      SortedScooters.sort(sorterDSCfree)
+      setScooters(SortedScooters)
+      setfreeSortState(0)
+    } else {
+      const SortedScooters = [...scooters]
+      SortedScooters.sort(sorterASCfree)
+      setScooters(SortedScooters)
+      setfreeSortState(1)
 
     }
   }
@@ -55,6 +73,28 @@ function App() {
     }
     return 0;
   }
+
+  function sorterDSCfree(a, b) {
+    if ((a.is_busy) > (b.is_busy)) {
+      return -1;
+    }
+    if ((a.is_busy) < (b.is_busy)) {
+      return 1;
+    }
+    return 0;
+  }
+
+  function sorterASCfree(a, b) {
+    if ((a.is_busy) > (b.is_busy)) {
+      return 1;
+    }
+    if ((a.is_busy) < (b.is_busy)) {
+      return -1;
+    }
+    return 0;
+  }
+
+  /////////////////////sorting functions ////////////////////////////////
 
   function totalRide() {
     let total = 0;
@@ -147,7 +187,7 @@ function App() {
         <tbody>
           <tr>
             <th>Registracijos kodas</th>
-            <th>Būsena</th>
+            <th>Būsena <button onClick={() => sortingByfree(freeSortState)}>Sort</button></th>
             <th>Paskutinio naudojimo data</th>
             <th>Rida <button onClick={() => sortingByKM(kmSortState)}>Sort</button></th>
             <th>Funkcijos</th>
